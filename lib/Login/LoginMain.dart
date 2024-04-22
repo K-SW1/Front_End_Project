@@ -15,7 +15,7 @@ class LoginMain extends StatelessWidget {
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             backgroundColor: Colors.black,
-            primary: Colors.white,
+            primary: Color.fromRGBO(121,159,165,1.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
