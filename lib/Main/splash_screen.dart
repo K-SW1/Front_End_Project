@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project/Main/LoginMainPage.dart';
-import 'package:project/Main/MainHome.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,9 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _init() async {
-    // Simulate some delay (e.g., fetching data, loading resources)
     await Future.delayed(Duration(seconds: 2));
-
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
@@ -38,19 +35,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Color appBarColor = Color.fromRGBO(121,159,165,1.0);
     return Container(
-      color: Colors.white,
+      color: appBarColor,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/instagram.png',
-              width: 400,
-              height: 250,
-              fit: BoxFit.cover,
+              'assets/images/recall_splash.png',
+              fit: BoxFit.contain,
             ),
-            CircularProgressIndicator(color: Colors.blue,)
+            Text("\n"),
+            CircularProgressIndicator(color: Colors.white,)
           ],
         ),
       ),
