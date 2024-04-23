@@ -20,7 +20,6 @@ class RegistPage extends StatelessWidget {
               child: Image(
                 image: AssetImage('assets/images/recall_splash.png'),
                   fit: BoxFit.contain,
-                // color: Colors.black,
               ),
             ),
             SizedBox(height: xlarge_gap,),
