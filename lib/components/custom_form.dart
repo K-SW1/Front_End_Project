@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project/Custom/custom_size.dart';
 import 'package:project/components/custom_text_form_field.dart';
 
+// 회원 가입 부분
+
 class CustomForm extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project/Login/LoginMain.dart';
+import 'package:project/Regist/RegistAgree.dart';
 import 'package:project/Regist/RegistMain.dart';
 
 void main() => runApp(LoginPage());
@@ -48,7 +49,7 @@ class LoginPage extends StatelessWidget {
 
               InkWell(
                 onTap: () {
-                  Get.to(() => RegistMain());
+                  Get.to(() => RegistAgree());
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10),

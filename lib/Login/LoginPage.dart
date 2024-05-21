@@ -9,12 +9,12 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(121,159,165,1.0),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: ListView(
           children: [
             SizedBox(height: 100),
-
             Center(
               child: Image(
                 image: AssetImage('assets/images/recall_splash.png'),
@@ -22,7 +22,6 @@ class LoginPage extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-
             SizedBox(height: xlarge_gap,),
             SizedBox(height: large_gap,),
             CustomForm(),
