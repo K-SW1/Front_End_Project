@@ -125,7 +125,7 @@ import 'package:get/get.dart';
 import 'package:project/Main/Second.dart';
 import 'package:project/Main/first.dart';
 import 'package:project/components/custom_banner.dart';
-import 'package:project/components/custom_leading_button.dart';
+
 
 void main() => runApp(MainHome());
 
@@ -179,25 +179,32 @@ class Home extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              width: 400,
-              height: 100,
-              color: Colors.white10,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.check_circle,
-                    size: 45, // 아이콘 크기를 줄임
-                    color: Colors.black,
-                  ),
-                  SizedBox(width: 20),
-                  Text(
-                    "치매 자가 체크리스트",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold), // 텍스트 크기를 줄임
-                  ),
-                ],
+
+
+            InkWell(
+              onTap: () {
+                Get.to(()=> Second());
+              },
+              child: Container(
+                width: 400,
+                height: 100,
+                color: Colors.white10,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.check_circle,
+                      size: 45,
+                      color: Colors.black,
+                    ),
+                    SizedBox(width: 20),
+                    Text(
+                      "치매 자가 체크리스트",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
               ),
             ),
 
@@ -227,59 +234,71 @@ class Home extends StatelessWidget {
 
             Divider(thickness: 3, color: Colors.black),
 
-            Container(
-              width: 400,
-              height: 100,
-              color: Colors.white10,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.family_restroom,
-                    size: 40, // 아이콘 크기를 줄임
-                    color: Colors.black,
-                  ),
-                  SizedBox(width: 20),
-                  Text(
-                    "우리 가족 퀴즈",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold), // 텍스트 크기를 줄임
-                  ),
-                ],
+
+            InkWell(
+              onTap: (){
+                Get.to(() => Second());
+              },
+              child: Container(
+                width: 400,
+                height: 100,
+                color: Colors.white10,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.family_restroom,
+                      size: 40,
+                      color: Colors.black,
+                    ),
+                    SizedBox(width: 20),
+                    Text(
+                      "우리 가족 퀴즈",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
               ),
             ),
 
             Divider(thickness: 3, color: Colors.black),
 
-            Container(
-              width: 400,
-              height: 100,
-              color: Colors.white10,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.calendar_month,
-                    size: 40, // 아이콘 크기를 줄임
-                    color: Colors.black,
-                  ),
-                  SizedBox(width: 20),
-                  Text(
-                    "돌봄 다이어리",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold), // 텍스트 크기를 줄임
-                  ),
-                ],
+
+            InkWell(
+              onTap: () {
+                Get.to(()=> Second());
+              },
+              child: Container(
+                width: 400,
+                height: 100,
+                color: Colors.white10,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.calendar_month,
+                    size: 40,
+                    color: Colors.black
+                    ),
+                    SizedBox(width: 20),
+                    Text(
+                      "돌봄 다이어리",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
               ),
             ),
 
-
             Divider(thickness: 3, color: Colors.black),
+
             Text("\n\n\n\n\n"),
+
             Container(
               height: 140,
               child: CustomBanner(),
-            )
+            ),
           ],
         ),
       ),
