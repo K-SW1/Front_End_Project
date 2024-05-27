@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project/Main/Second.dart';
+import 'package:project/Quiz/TextQuiz.dart';
 import 'package:project/components/custom_appbar.dart';
 import 'package:project/components/custom_banner.dart';
 
@@ -51,7 +52,7 @@ class QuizRegister extends StatelessWidget {
             Divider(thickness: 3,color: Colors.black),
             InkWell(
               onTap: () {
-                Get.to(() => Second());
+                Get.to(() => TextQuiz());
               },
               child: Container(
                 width: 400,
