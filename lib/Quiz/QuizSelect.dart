@@ -94,10 +94,10 @@ class QuizSelect extends StatelessWidget {
           selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           items: <BottomNavigationBarItem>[
-      BottomNavigationBarItem(icon: Icon(Icons.phone, size: 35), label: ""),
-    BottomNavigationBarItem(icon: Icon(Icons.home, size: 35), label: ""),
+      BottomNavigationBarItem(icon: Icon(Icons.phone, size: 45), label: ""),
+    BottomNavigationBarItem(icon: Icon(Icons.home, size: 45), label: ""),
     BottomNavigationBarItem(
-    icon: Icon(Icons.account_circle, size: 35), label: ""),
+    icon: Icon(Icons.account_circle, size: 45), label: ""),
     ],
       ),
     );
