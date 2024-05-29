@@ -4,6 +4,8 @@ import 'package:project/components/custom_banner.dart';
 import 'package:project/components/custom_textquiz_answer.dart';
 import 'package:project/components/custom_textquiz_form.dart';
 
+void main() => runApp(TextQuiz());
+
 class TextQuiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -125,9 +127,9 @@ class TextQuiz extends StatelessWidget {
         selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
         unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.phone, size: 35), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.home, size: 35), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle, size: 35), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.phone, size: 45), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.home, size: 45), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle, size: 45), label: ""),
         ],
       ),
     );
