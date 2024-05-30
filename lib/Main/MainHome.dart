@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project/Center/CenterSearch.dart';
 import 'package:project/Main/Second.dart';
 import 'package:project/Quiz/QuizSelect.dart';
 import 'package:project/components/custom_banner.dart';
@@ -67,30 +68,60 @@ class Home extends StatelessWidget {
               ),
             ),
             Divider(thickness: 3, color: Colors.black),
-            Container(
-              width: 400,
-              height: 100,
-              color: Colors.white10,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.grain,
-                    size: 40,
-                    color: Colors.black,
-                  ),
-                  SizedBox(width: 20),
-                  Text(
-                    "뇌 건강 트레이닝",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
+
+            InkWell(
+              onTap: () {
+                Get.to(() => CenterSearch());
+              },
+              child: Container(
+                width: 400,
+                height: 100,
+                color: Colors.white10,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.grain,
+                      size: 40,
+                      color: Colors.black,
                     ),
-                  ),
-                ],
+                    SizedBox(width: 20),
+                    Text(
+                      "데이케어 센터 검색",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 40,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
+            // Container(
+            //   width: 400,
+            //   height: 100,
+            //   color: Colors.white10,
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.start,
+            //     children: [
+            //       Icon(
+            //         Icons.grain,
+            //         size: 40,
+            //         color: Colors.black,
+            //       ),
+            //       SizedBox(width: 20),
+            //       Text(
+            //         "데이케어 센터 검색",
+            //         textAlign: TextAlign.center,
+            //         style: TextStyle(
+            //           fontSize: 40,
+            //           fontWeight: FontWeight.bold,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             Divider(thickness: 3, color: Colors.black),
             InkWell(
               onTap: () {
