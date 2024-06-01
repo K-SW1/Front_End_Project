@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:project/dto/banenr_controller.dart';
+import 'package:project/dto/banner_controller.dart';
 
 class CustomBanner extends StatelessWidget {
   final BannerController bannerController = Get.put(BannerController());
