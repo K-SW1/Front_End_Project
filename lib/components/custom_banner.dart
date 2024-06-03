@@ -24,6 +24,7 @@ class CustomBanner extends StatelessWidget {
                     children: [
                       buildBanner('광고 1', 0),
                       buildBanner('광고 2', 1),
+                      buildBanner("광고 3", 2),
                     ],
                   ),
                   Obx(() => Align(
@@ -32,7 +33,7 @@ class CustomBanner extends StatelessWidget {
                       margin: EdgeInsets.symmetric(vertical: 5.0), // 높이
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(2, (i) => Container( // 개수
+                        children: List.generate(3, (i) => Container( // 개수
                           margin: EdgeInsets.all(2.0), // 간격
                           width: 8,
                           height: 8,
