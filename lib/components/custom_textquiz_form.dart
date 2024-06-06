@@ -19,3 +19,27 @@ class CustomTextForm extends StatelessWidget {
     );
   }
 }
+
+
+//
+// import 'package:flutter/material.dart';
+//
+// class CustomTextForm extends StatelessWidget {
+//   final TextEditingController controller;
+//
+//   CustomTextForm({required this.controller});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextFormField(
+//       controller: controller,
+//       validator: (value) {
+//         if (value == null || value.isEmpty) {
+//           return '텍스트를 입력해주세요';
+//         }
+//         return null;
+//       },
+//     );
+//   }
+// }
+
