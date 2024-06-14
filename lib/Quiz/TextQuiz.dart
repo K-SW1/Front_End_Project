@@ -300,15 +300,12 @@ class _QuizFormState extends State<QuizForm> {
                     Center(
                       child: ElevatedButton(
                         onPressed: _saveQuiz,
-                        child: Text('저장하기'),
+                        child: Text('저장하기',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
-                    SizedBox(height: 90),
-                    Container(
-                      width: double.infinity,
-                      height: 140,
-                      child: CustomBanner(),
-                    ),
+
                   ],
                 ),
               ),
