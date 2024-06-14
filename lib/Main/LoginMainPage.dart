@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project/Login/LoginMain.dart';
+import 'package:project/Main/first.dart';
 import 'package:project/Regist/RegistAgree.dart';
 
 
@@ -28,7 +29,7 @@ class LoginPage extends StatelessWidget {
                 },
                 child: Container(
                   margin: EdgeInsets.only(bottom: 70),
-                  width: 160,
+                  width: 180,
                   height: 100,
                   child: Center(
                     child: Text(
@@ -53,7 +54,7 @@ class LoginPage extends StatelessWidget {
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10),
-                  width: 160,
+                  width: 180,
                   height: 100,
                   child: Center(
                     child: Text(
@@ -71,6 +72,35 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
               ),
+
+              SizedBox(height: 60,),
+              InkWell(
+                onTap: () {
+                  Get.to(() => first());
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  width: 180,
+                  height: 100,
+                  child: Center(
+                    child: Text(
+                      "치매테스트",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                      ),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(35),
+                      border: Border.all(color: Colors.black, width: 3),
+                      color: Colors.white
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 90,),
+              Image.asset("assets/images/recall_splash.png",height: 40,),
             ],
           ),
         ),
