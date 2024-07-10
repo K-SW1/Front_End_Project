@@ -14,7 +14,7 @@ class CustomBottomState extends State<CustomBottom> {
   int _selectedIndex = 0;
 
   final List<Widget> _navIndex = [
-    MainHome(),
+    Home(),
     CalenderApp(),
     TextQuiz(),
   ];
