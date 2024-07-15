@@ -14,8 +14,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Image(
             image: AssetImage("assets/images/recall_splash.png"),
-            fit: BoxFit.contain,
-            height: 40,
+            fit: BoxFit.fitWidth,
+            height: 34,
           ),
           SizedBox(width: 104,),
           IconButton(
