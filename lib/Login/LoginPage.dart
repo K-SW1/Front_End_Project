@@ -1,35 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:project/Custom/custom_size.dart';
-//
-// class LoginPage extends StatelessWidget {
-//   LoginPage({Key? key}):super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Color.fromRGBO(121,159,165,1.0),
-//       body: Padding(
-//         padding: EdgeInsets.all(16.0),
-//         child: ListView(
-//           children: [
-//             SizedBox(height: 100),
-//             Center(
-//               child: Image(
-//                 image: AssetImage('assets/images/recall_splash.png'),
-//                 fit: BoxFit.contain,
-//                 color: Colors.black,
-//               ),
-//             ),
-//             SizedBox(height: xlarge_gap,),
-//             SizedBox(height: large_gap,),
-//             // CustomForm(),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -64,38 +32,65 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       if (response.statusCode == 200) {
-        // Successful login
         print('Login successful');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('로그인 성공!',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+            backgroundColor: Color.fromRGBO(121,159,165,1.0),
+          ),
+        );
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => MainHome()),
         );  // Navigate to MainHome
+      } else if (response.statusCode == 401) {
+        // Unauthorized - wrong username or password
+        print('Invalid username or password');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('잘못된 입력입니다!'),
+            backgroundColor: Colors.red,
+          ),
+        );
       } else {
-        // Handle other status codes, such as 4xx or 5xx errors
         print('Failed to login. Status code: ${response.statusCode}');
-
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('ID/PW를 다시 입력하세요',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+            backgroundColor: Color.fromRGBO(121,159,161,1.0),
+          ),
+        );
       }
     } catch (e) {
-      // Handle network or server errors
       print('Exception occurred while logging in: $e');
-
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('로그인 실패!'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
+      backgroundColor: Color.fromRGBO(121, 159, 161, 1.0),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Center(
+              child: Image(
+                image: AssetImage('assets/images/recall_splash.png'),
+                fit: BoxFit.contain,
+              ),
+            ),
+            SizedBox(height: 100),
             TextField(
               controller: usernameController,
-              decoration: InputDecoration(labelText: 'Username'),
+              decoration: InputDecoration(labelText: "Username"),
             ),
             TextField(
               controller: passwordController,
@@ -104,8 +99,16 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(100003,50),
+                backgroundColor: Color.fromRGBO(121,159,161,1.0),
+                elevation: 0
+              ),
               onPressed: login,
-              child: Text('Login'),
+              child: Text(
+                '로   그   인',
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),
+              ),
             ),
           ],
         ),
