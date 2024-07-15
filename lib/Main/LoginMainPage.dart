@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project/Dementia/DementiaTest.dart';
 import 'package:project/Login/LoginMain.dart';
-import 'package:project/Main/first.dart';
 import 'package:project/Regist/RegistAgree.dart';
 
 
 void main() => runApp(LoginPage());
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,6 @@ class LoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
               InkWell(
                 onTap: () {
                   Get.to(() => LoginMain());
@@ -50,7 +48,7 @@ class LoginPage extends StatelessWidget {
 
               InkWell(
                 onTap: () {
-                  Get.to(() => RegistAgree());
+                  Get.to(() => TermsOfServiceAgreement());
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10),
@@ -76,7 +74,7 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: 60,),
               InkWell(
                 onTap: () {
-                  Get.to(() => first());
+                  Get.to(() => DementiaTest());
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10),
@@ -99,7 +97,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: 90,),
+              SizedBox(height: 90),
               Image.asset("assets/images/recall_splash.png",height: 40,),
             ],
           ),
