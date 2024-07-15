@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:project/Regist/RegistPage.dart';
+import 'package:project/components/custom_regist_form.dart';
 
 void main() => runApp(RegistMain());
 
@@ -25,7 +26,7 @@ class RegistMain extends StatelessWidget {
       ),
       initialRoute: "/regist",
       routes: {
-        "/regist":(context) => RegistPage(),
+        "/regist":(context) => MemberRegistrationPage(),
       },
     );
   }
