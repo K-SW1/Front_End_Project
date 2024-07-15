@@ -25,7 +25,7 @@ class RegistPage extends StatelessWidget {
             SizedBox(height: xlarge_gap,),
             SizedBox(height: large_gap,),
             SizedBox(height: large_gap,),
-            CustomRegistForm(),
+            // CustomRegistForm(),
           ],
         ),
       ),
