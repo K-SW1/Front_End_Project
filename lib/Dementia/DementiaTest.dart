@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project/Login/LoginMain.dart';
+import 'package:project/Login/LoginPage.dart';
 import 'package:project/components/custom_appbar.dart';
 
 void main() => runApp(DementiaTest());
@@ -288,7 +289,7 @@ class ResultWidget extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // 첫 페이지로 이동
-                Get.to(() => LoginMain());
+                Get.to(() => Login());
                 // Navigator.of(context).pop();
               },
               child: Text(
