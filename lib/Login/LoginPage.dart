@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:project/Main/MainHome.dart';
 
-class LoginPage extends StatefulWidget {
+class Login extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<Login> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -110,6 +110,8 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),
               ),
             ),
+
+
           ],
         ),
       ),
@@ -120,6 +122,9 @@ class _LoginPageState extends State<LoginPage> {
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: LoginPage(),
+    home: Login(),
   ));
 }
+
+
+
