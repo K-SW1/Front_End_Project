@@ -17,19 +17,20 @@ class RegistAgree extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: TermsOfServiceAgreement(),
+      home: IdRegist(),
     );
   }
 }
 
 
-class TermsOfServiceAgreement extends StatefulWidget {
+class IdRegist extends StatefulWidget {
 
   @override
-  State<TermsOfServiceAgreement> createState() => _TermsOfServiceAgreementState();
+  State<IdRegist> createState() => _TermsOfServiceAgreementState();
+
 }
 
-class _TermsOfServiceAgreementState extends State<TermsOfServiceAgreement> {
+class _TermsOfServiceAgreementState extends State<IdRegist> {
   List<bool> _isChecked = List.generate(5, (_) => false);
 
   bool get _buttonActive => _isChecked[1] && _isChecked[2] && _isChecked[3];
@@ -51,22 +52,16 @@ class _TermsOfServiceAgreementState extends State<TermsOfServiceAgreement> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Colors.black,
-          ),
-        ),
+        backgroundColor: Color.fromRGBO(121,159,161,1.0),
+        elevation: 0,
+        title: Text("회원가입 약관 동의",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w700,color: Colors.black),),
       ),
+      backgroundColor: Color.fromRGBO(121,159,161,1.0),
       body: Padding(
         padding: const EdgeInsets.all(18.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('회원가입 약관 동의', style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w700)),
             const SizedBox(height: 50),
             ..._renderCheckList(),
             const Spacer(),
@@ -75,12 +70,14 @@ class _TermsOfServiceAgreementState extends State<TermsOfServiceAgreement> {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: _buttonActive ? Colors.blue : Colors.grey,
+                      minimumSize: Size(100003,50),
+                      backgroundColor: _buttonActive ? Colors.blue : Color.fromRGBO(121,159,161,1.0),
+                      elevation: 0,
                     ),
                     onPressed: () {
                       Get.to(()=> RegistMain());
                     },
-                    child: const Text('가입하기',style: TextStyle(color: Colors.black),),
+                    child: const Text('가입하기',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 25),),
                   ),
                 ),
               ],
@@ -115,7 +112,6 @@ class _TermsOfServiceAgreementState extends State<TermsOfServiceAgreement> {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
-        color: Color.fromRGBO(121,159,165,1.0),
         child: Row(
           children: [
             Container(
