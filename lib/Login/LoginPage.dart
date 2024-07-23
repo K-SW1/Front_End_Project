@@ -12,13 +12,15 @@ class _LoginPageState extends State<Login> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  // 로그인 함수
   Future<void> login() async {
-    String url = 'http://localhost:8080/auth/login';
+    String url = 'http://localhost:8080/auth/login'; // 로그인 요청 URL
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
     };
 
+    // 요청 바디를 username과 password만 포함하도록 변경
     Map<String, dynamic> body = {
       'username': usernameController.text,
       'password': passwordController.text,
@@ -31,33 +33,41 @@ class _LoginPageState extends State<Login> {
         body: jsonEncode(body),
       );
 
+      // 응답 상태 코드에 따른 처리
       if (response.statusCode == 200) {
-        print('Login successful');
+        var responseData = jsonDecode(response.body);
+        String accessToken = responseData['accessToken'];
+        String refreshToken = responseData['refreshToken'];
+
+        print('로그인 성공');
+        print('accessToken: $accessToken');
+        print('refreshToken: $refreshToken');
+        print("\n");
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('로그인 성공!',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-            backgroundColor: Color.fromRGBO(121,159,165,1.0),
+            content: Text('로그인 성공!', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+            backgroundColor: Color.fromRGBO(121, 159, 165, 1.0),
           ),
         );
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => MainHome()),
-        );  // Navigate to MainHome
+        );
       } else if (response.statusCode == 401) {
-        // Unauthorized - wrong username or password
-        print('Invalid username or password');
+        print('ID/PW를 다시 입력하세요');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('잘못된 입력입니다!'),
-            backgroundColor: Colors.red,
+            content: Text('ID/PW를 다시 입력하세요', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+            backgroundColor: Color.fromRGBO(121, 159, 161, 1.0),
           ),
         );
       } else {
         print('Failed to login. Status code: ${response.statusCode}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('ID/PW를 다시 입력하세요',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-            backgroundColor: Color.fromRGBO(121,159,161,1.0),
+            content: Text('로그인 실패', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            backgroundColor: Color.fromRGBO(121, 159, 161, 1.0),
           ),
         );
       }
@@ -90,7 +100,7 @@ class _LoginPageState extends State<Login> {
             SizedBox(height: 100),
             TextField(
               controller: usernameController,
-              decoration: InputDecoration(labelText: "Username"),
+              decoration: InputDecoration(labelText: "ID"),
             ),
             TextField(
               controller: passwordController,
@@ -100,18 +110,16 @@ class _LoginPageState extends State<Login> {
             SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(100003,50),
-                backgroundColor: Color.fromRGBO(121,159,161,1.0),
-                elevation: 0
+                minimumSize: Size(double.infinity, 50),
+                backgroundColor: Color.fromRGBO(121, 159, 161, 1.0),
+                elevation: 0,
               ),
               onPressed: login,
               child: Text(
                 '로   그   인',
-                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
             ),
-
-
           ],
         ),
       ),
@@ -125,6 +133,3 @@ void main() {
     home: Login(),
   ));
 }
-
-
-
