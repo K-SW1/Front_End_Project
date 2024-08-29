@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_naver_map:
+  flutter_naver_map: ^1.1.2
   geocoding: ^2.0.4
   cupertino_icons: ^1.0.2
   get:
@@ -21,6 +21,9 @@ dependencies:
   intl:
   dio:
   fluttertoast:
+  flutter_secure_storage:
+  image_picker: ^1.0.8
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
