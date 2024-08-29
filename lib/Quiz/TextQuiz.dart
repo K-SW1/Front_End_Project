@@ -545,7 +545,7 @@ class _CustomTextAnswerState extends State<CustomTextAnswer> {
               Text("정답 여부:"),
               SizedBox(width: 10),
               ChoiceChip(
-                label: Text('True'),
+                label: Text('정답'),
                 selected: _isCorrect,
                 onSelected: (selected) {
                   setState(() {
@@ -556,7 +556,7 @@ class _CustomTextAnswerState extends State<CustomTextAnswer> {
               ),
               SizedBox(width: 10),
               ChoiceChip(
-                label: Text('False'),
+                label: Text('거짓'),
                 selected: !_isCorrect,
                 onSelected: (selected) {
                   setState(() {
