@@ -1,169 +1,192 @@
 // import 'package:flutter/material.dart';
 // import 'package:project/components/custom_appbar.dart';
-// import 'package:project/components/custom_banner.dart';
-// import 'package:project/components/custom_textquiz_answer.dart';
-// import 'package:project/components/custom_textquiz_form.dart';
+// import 'package:project/components/custom_bottomNavigation.dart';
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
+// import 'package:shared_preferences/shared_preferences.dart';
 //
 // void main() => runApp(TextQuiz());
 //
 // class TextQuiz extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
-//     Color appBarColor = Color.fromRGBO(121, 159, 165, 1.0);
+//     return MaterialApp(
+//       home: QuizForm(),
+//     );
+//   }
+// }
+//
+// class QuizForm extends StatefulWidget {
+//   @override
+//   _QuizFormState createState() => _QuizFormState();
+// }
+//
+// class _QuizFormState extends State<QuizForm> {
+//   final _formKey = GlobalKey<FormState>();
+//   final _questionController = TextEditingController();
+//   final _hintController = TextEditingController();
+//
+//   Color appBarColor = Color.fromRGBO(121, 159, 165, 1.0);
+//
+//   @override
+//   void dispose() {
+//     _questionController.dispose();
+//     _hintController.dispose();
+//     super.dispose();
+//   }
+//
+//   Future<String?> _getAccessToken() async {
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//     return prefs.getString('accessToken');
+//   }
+//
+//   Future<void> _saveQuestionHint() async {
+//     if (_formKey.currentState?.validate() ?? false) {
+//       String? accessToken = await _getAccessToken();
+//
+//       if (accessToken == null) {
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(content: Text('로그인 정보가 없습니다. 다시 로그인 해주세요.')),
+//         );
+//         return;
+//       }
+//
+//       final quizData = {
+//         'question': _questionController.text,
+//         'hint': _hintController.text,
+//       };
+//
+//       try {
+//         final response = await http.post(
+//           Uri.parse('http://localhost:8080/textquiz/add'),
+//           headers: {
+//             'Content-Type': 'application/json',
+//             'accessToken': '$accessToken',
+//           },
+//           body: jsonEncode(quizData),
+//         );
+//
+//         if (response.statusCode == 200) {
+//           ScaffoldMessenger.of(context).showSnackBar(
+//             SnackBar(content: Text('문제와 힌트가 성공적으로 저장되었습니다!')),
+//           );
+//         } else {
+//           ScaffoldMessenger.of(context).showSnackBar(
+//             SnackBar(content: Text('문제와 힌트 저장에 실패했습니다: ${response.statusCode}')),
+//           );
+//           print('Failed to save quiz: ${response.statusCode} - ${response.body}');
+//         }
+//       } catch (error) {
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(content: Text('문제와 힌트 저장 중 오류가 발생했습니다: $error')),
+//         );
+//         print('Error occurred while saving quiz: $error');
+//       }
+//     }
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
 //     return Scaffold(
-//       backgroundColor: Colors.white,
 //       appBar: CustomAppBar(),
 //       body: SafeArea(
 //         child: SingleChildScrollView(
 //           child: Center(
-//             child: Column(
-//               children: [
-//                 SizedBox(height: 20),
-//                 Text(
-//                   "우리 가족 퀴즈 문제 등록",
-//                   textAlign: TextAlign.center,
-//                   style: TextStyle(
-//                     fontWeight: FontWeight.bold,
-//                     fontSize: 25,
-//                   ),
-//                 ),
-//                 SizedBox(height: 50),
-//                 Text(
-//                   "문제 내용",
-//                   textAlign: TextAlign.center,
-//                   style: TextStyle(
-//                     fontSize: 25,
-//                     fontWeight: FontWeight.bold,
-//                   ),
-//                 ),
-//                 CustomTextForm(),
-//                 SizedBox(height: 53),
-//                 Text(
-//                   "힌트 내용",
-//                   textAlign: TextAlign.center,
-//                   style: TextStyle(
-//                     fontSize: 25,
-//                     fontWeight: FontWeight.bold,
-//                   ),
-//                 ),
-//                 CustomTextForm(),
-//                 SizedBox(height: 46),
-//                 Row(
-//                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+//             child: Form(
+//               key: _formKey,
+//               child: Padding(
+//                 padding: const EdgeInsets.all(16.0),
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.center,
 //                   children: [
-//                     Column(
-//                       children: [
-//                         Text(
-//                           "보기 1",
-//                           textAlign: TextAlign.center,
-//                           style: TextStyle(
-//                             fontSize: 25,
-//                             fontWeight: FontWeight.bold,
-//                           ),
-//                         ),
-//                         SizedBox(height: 10),
-//                         CustomTextAnswer(),
-//                       ],
+//                     SizedBox(height: 20),
+//                     Text(
+//                       "우리 가족 퀴즈 문제 등록",
+//                       textAlign: TextAlign.center,
+//                       style: TextStyle(
+//                         fontWeight: FontWeight.bold,
+//                         fontSize: 25,
+//                       ),
 //                     ),
-//                     Column(
-//                       children: [
-//                         Text(
-//                           "보기 2",
-//                           textAlign: TextAlign.center,
-//                           style: TextStyle(
-//                             fontSize: 25,
-//                             fontWeight: FontWeight.bold,
-//                           ),
-//                         ),
-//                         SizedBox(height: 10),
-//                         CustomTextAnswer(),
-//                       ],
+//                     SizedBox(height: 30),
+//                     Text(
+//                       "문제 내용",
+//                       style: TextStyle(
+//                         fontSize: 20,
+//                         fontWeight: FontWeight.bold,
+//                       ),
 //                     ),
-//                     Column(
-//                       children: [
-//                         Text(
-//                           "보기 3",
-//                           textAlign: TextAlign.center,
-//                           style: TextStyle(
-//                             fontSize: 25,
-//                             fontWeight: FontWeight.bold,
-//                           ),
-//                         ),
-//                         SizedBox(height: 10),
-//                         CustomTextAnswer(),
-//                       ],
+//                     CustomTextForm(controller: _questionController),
+//                     SizedBox(height: 20),
+//                     Text(
+//                       "힌트 내용",
+//                       style: TextStyle(
+//                         fontSize: 20,
+//                         fontWeight: FontWeight.bold,
+//                       ),
 //                     ),
-//                     Column(
-//                       children: [
-//                         Text(
-//                           "정답",
-//                           textAlign: TextAlign.center,
-//                           style: TextStyle(
-//                             color: Color.fromRGBO(121, 159, 165, 1.0),
-//                             fontSize: 25,
-//                             fontWeight: FontWeight.bold,
-//                           ),
+//                     CustomTextForm(controller: _hintController),
+//                     SizedBox(height: 20),
+//                     Center(
+//                       child: ElevatedButton(
+//                         onPressed: _saveQuestionHint,
+//                         child: Text(
+//                           '문제와 힌트 저장',
+//                           style: TextStyle(fontWeight: FontWeight.bold),
 //                         ),
-//                         SizedBox(height: 10),
-//                         CustomTextAnswer(),
-//                       ],
+//                       ),
 //                     ),
 //                   ],
 //                 ),
-//                 SizedBox(height: 39),
-//                 ElevatedButton(
-//                   onPressed: () {
-//                     // 저장 로직을 여기에 추가
-//                   },
-//                   style: ElevatedButton.styleFrom(
-//                     elevation: 0,
-//                     primary: Colors.white,
-//                   ),
-//                   child: Text(
-//                     '저장하기',
-//                     style: TextStyle(
-//                       color: Colors.black,
-//                       fontSize: 20,
-//                       fontWeight: FontWeight.bold,
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(height: 0),
-//                 Container(
-//                   height: 140,
-//                   child: CustomBanner(),
-//                 ),
-//               ],
+//               ),
 //             ),
 //           ),
 //         ),
 //       ),
+//       bottomNavigationBar: CustomBottom(),
+//     );
+//   }
+// }
 //
-//       bottomNavigationBar: BottomNavigationBar(
-//         elevation: 5,
-//         selectedItemColor: appBarColor,
-//         unselectedItemColor: appBarColor,
-//         selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-//         unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-//         items: <BottomNavigationBarItem>[
-//           BottomNavigationBarItem(icon: Icon(Icons.phone, size: 45), label: ""),
-//           BottomNavigationBarItem(icon: Icon(Icons.home, size: 45), label: ""),
-//           BottomNavigationBarItem(icon: Icon(Icons.account_circle, size: 45), label: ""),
-//         ],
+// class CustomTextForm extends StatelessWidget {
+//   final TextEditingController controller;
+//
+//   CustomTextForm({required this.controller});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: double.infinity, // Full width
+//       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Padding for better spacing
+//       child: TextFormField(
+//         controller: controller,
+//         decoration: InputDecoration(
+//           border: OutlineInputBorder(
+//             borderRadius: BorderRadius.circular(10),
+//             borderSide: BorderSide(
+//               width: 1,
+//             ),
+//           ),
+//         ),
+//         validator: (value) {
+//           if (value == null || value.isEmpty) {
+//             return '텍스트를 입력해주세요';
+//           }
+//           return null;
+//         },
 //       ),
 //     );
 //   }
 // }
-
-
-
+//
 
 
 import 'package:flutter/material.dart';
 import 'package:project/components/custom_appbar.dart';
-import 'package:project/components/custom_banner.dart';
+import 'package:project/components/custom_bottomNavigation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(TextQuiz());
 
@@ -188,9 +211,14 @@ class _QuizFormState extends State<QuizForm> {
   final _answer1Controller = TextEditingController();
   final _answer2Controller = TextEditingController();
   final _answer3Controller = TextEditingController();
-  final _correctAnswerController = TextEditingController();
+
+  // State variables for storing validation values
+  bool? _validation1;
+  bool? _validation2;
+  bool? _validation3;
 
   Color appBarColor = Color.fromRGBO(121, 159, 165, 1.0);
+  int? _textQuizId;
 
   @override
   void dispose() {
@@ -199,45 +227,123 @@ class _QuizFormState extends State<QuizForm> {
     _answer1Controller.dispose();
     _answer2Controller.dispose();
     _answer3Controller.dispose();
-    _correctAnswerController.dispose();
     super.dispose();
   }
 
-  Future<void> _saveQuiz() async {
+  Future<String?> _getAccessToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('accessToken');
+  }
+
+  Future<String?> _getUserLoginId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userLoginId');
+  }
+
+  Future<void> _saveQuestionAndHint() async {
     if (_formKey.currentState?.validate() ?? false) {
+      String? accessToken = await _getAccessToken();
+      String? userLoginId = await _getUserLoginId();
+
       final quizData = {
+        'userLoginId': userLoginId,
         'question': _questionController.text,
         'hint': _hintController.text,
-        'answer1': _answer1Controller.text,
-        'answer2': _answer2Controller.text,
-        'answer3': _answer3Controller.text,
-        'correctAnswer': _correctAnswerController.text,
       };
-
-      print('Sending data to server: $quizData'); // 디버그 로그
 
       try {
         final response = await http.post(
-          Uri.parse('http://localhost:8080/imagequiz/save'),
-          headers: {'Content-Type': 'application/json'},
+          Uri.parse('http://localhost:8080/textquiz/add'),
+          headers: {
+            'Content-Type': 'application/json',
+            'accessToken': '$accessToken',
+          },
           body: jsonEncode(quizData),
         );
 
         if (response.statusCode == 200) {
+          final responseData = jsonDecode(response.body);
+          setState(() {
+            _textQuizId = responseData['data']['textQuizId'];
+          });
+
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('퀴즈가 성공적으로 저장되었습니다!')),
+            SnackBar(content: Text('문제와 힌트가 성공적으로 저장되었습니다!')),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('퀴즈 저장에 실패했습니다: ${response.statusCode}')),
+            SnackBar(content: Text('문제와 힌트 저장에 실패했습니다: ${response.statusCode}')),
           );
-          print('Failed to save quiz: ${response.statusCode} - ${response.body}'); // 디버그 로그
         }
       } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('퀴즈 저장 중 오류가 발생했습니다: $error')),
+          SnackBar(content: Text('문제와 힌트 저장 중 오류가 발생했습니다: $error')),
         );
-        print('Error occurred while saving quiz: $error'); // 디버그 로그
+      }
+    }
+  }
+
+  Future<void> _saveAnswersAndCorrectAnswer() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      if (_textQuizId == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('먼저 문제와 힌트를 저장해 주세요.')),
+        );
+        return;
+      }
+
+      String? accessToken = await _getAccessToken();
+      if (accessToken == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('로그인 정보가 없습니다. 다시 로그인 해주세요.')),
+        );
+        return;
+      }
+
+      final distractors = [
+        {
+          'textQuizId': _textQuizId,
+          'textzQuizDistractor': _answer1Controller.text,
+          'validation': _validation1 ?? false,
+        },
+        {
+          'textQuizId': _textQuizId,
+          'textzQuizDistractor': _answer2Controller.text,
+          'validation': _validation2 ?? false,
+        },
+        {
+          'textQuizId': _textQuizId,
+          'textzQuizDistractor': _answer3Controller.text,
+          'validation': _validation3 ?? false,
+        },
+      ];
+
+      try {
+        for (var distractor in distractors) {
+          final response = await http.post(
+            Uri.parse('http://localhost:8080/textquizDistractor/$_textQuizId/distractor/add'),
+            headers: {
+              'Content-Type': 'application/json',
+              'accessToken': '$accessToken',
+            },
+            body: jsonEncode(distractor),
+          );
+
+          if (response.statusCode != 200) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('보기와 정답 저장에 실패했습니다: ${response.statusCode}')),
+            );
+            return;
+          }
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('보기와 정답이 성공적으로 저장되었습니다!')),
+        );
+      } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('보기와 정답 저장 중 오류가 발생했습니다: $error')),
+        );
       }
     }
   }
@@ -284,6 +390,16 @@ class _QuizFormState extends State<QuizForm> {
                     ),
                     CustomTextForm(controller: _hintController),
                     SizedBox(height: 20),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: _saveQuestionAndHint,
+                        child: Text(
+                          '문제와 힌트 저장',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30),
                     Text(
                       "보기 및 정답",
                       style: TextStyle(
@@ -292,38 +408,49 @@ class _QuizFormState extends State<QuizForm> {
                       ),
                     ),
                     SizedBox(height: 10),
-                    CustomTextAnswer(controller: _answer1Controller, label: "보기 1"),
-                    CustomTextAnswer(controller: _answer2Controller, label: "보기 2"),
-                    CustomTextAnswer(controller: _answer3Controller, label: "보기 3"),
-                    CustomTextAnswer(controller: _correctAnswerController, label: "정답", color: appBarColor),
+                    CustomTextAnswer(
+                      controller: _answer1Controller,
+                      label: "보기 1",
+                      onValidationChanged: (value) {
+                        setState(() {
+                          _validation1 = value;
+                        });
+                      },
+                    ),
+                    CustomTextAnswer(
+                      controller: _answer2Controller,
+                      label: "보기 2",
+                      onValidationChanged: (value) {
+                        setState(() {
+                          _validation2 = value;
+                        });
+                      },
+                    ),
+                    CustomTextAnswer(
+                      controller: _answer3Controller,
+                      label: "보기 3",
+                      onValidationChanged: (value) {
+                        setState(() {
+                          _validation3 = value;
+                        });
+                      },
+                    ),
                     SizedBox(height: 30),
                     Center(
                       child: ElevatedButton(
-                        onPressed: _saveQuiz,
-                        child: Text('저장하기',
+                        onPressed: _saveAnswersAndCorrectAnswer,
+                        child: Text(
+                          '보기와 정답 저장',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
-
                   ],
                 ),
               ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 5,
-        selectedItemColor: appBarColor,
-        unselectedItemColor: appBarColor,
-        selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-        unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.phone, size: 45), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.home, size: 45), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle, size: 45), label: ""),
-        ],
       ),
     );
   }
@@ -337,8 +464,8 @@ class CustomTextForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity, // Full width
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Padding for better spacing
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
@@ -360,48 +487,85 @@ class CustomTextForm extends StatelessWidget {
   }
 }
 
-class CustomTextAnswer extends StatelessWidget {
+
+class CustomTextAnswer extends StatefulWidget {
   final TextEditingController controller;
   final String label;
-  final Color? color;
+  final Function(bool) onValidationChanged;
 
-  CustomTextAnswer({required this.controller, required this.label, this.color});
+  CustomTextAnswer({
+    required this.controller,
+    required this.label,
+    required this.onValidationChanged,
+  });
+
+  @override
+  _CustomTextAnswerState createState() => _CustomTextAnswerState();
+}
+
+class _CustomTextAnswerState extends State<CustomTextAnswer> {
+  bool _isCorrect = false; // Internal state to track the correct answer
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            label,
+            widget.label,
             style: TextStyle(
-              fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: color ?? Colors.black,
+              fontSize: 20,
             ),
           ),
-          Container(
-            width: double.infinity, // Full width
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Padding for better spacing
-            child: TextFormField(
-              controller: controller,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    width: 1,
-                  ),
+          SizedBox(height: 10),
+          TextFormField(
+            controller: widget.controller,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  width: 1,
                 ),
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '텍스트를 입력해주세요';
-                }
-                return null;
-              },
             ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return '텍스트를 입력해주세요';
+              }
+              return null;
+            },
+          ),
+          SizedBox(height: 10),
+          Row(
+            children: [
+              Text("정답 여부:"),
+              SizedBox(width: 10),
+              ChoiceChip(
+                label: Text('True'),
+                selected: _isCorrect,
+                onSelected: (selected) {
+                  setState(() {
+                    _isCorrect = selected;
+                    widget.onValidationChanged(_isCorrect); // Notify parent widget
+                  });
+                },
+              ),
+              SizedBox(width: 10),
+              ChoiceChip(
+                label: Text('False'),
+                selected: !_isCorrect,
+                onSelected: (selected) {
+                  setState(() {
+                    _isCorrect = !selected;
+                    widget.onValidationChanged(_isCorrect); // Notify parent widget
+                  });
+                },
+              ),
+            ],
           ),
         ],
       ),
