@@ -15,7 +15,7 @@ class RegistMain extends StatelessWidget {
       theme: ThemeData(
           textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                backgroundColor: Colors.black,
+                backgroundColor: Color.fromRGBO(121,159,161,1.0),
                 primary: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
