@@ -101,7 +101,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project/Quiz/QuizRegister.dart';
+import 'package:project/Quiz/all_test.dart';
 import 'package:project/Quiz/test_quiz.dart';
+import 'package:project/Quiz/test_select.dart';
 import 'package:project/components/custom_appbar.dart';
 import 'package:project/components/custom_banner.dart';
 import 'package:project/components/custom_bottomNavigation.dart';
@@ -126,7 +128,7 @@ class QuizSelect extends StatelessWidget {
             Divider(thickness: 3, color: Colors.black),
             InkWell(
               onTap: () {
-                Get.to(() => QuizPage());
+                Get.to(() => Alltest());
               },
               child: Container(
                 width: 400,
