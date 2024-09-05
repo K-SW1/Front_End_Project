@@ -57,7 +57,9 @@ class _QuizPageState extends State<QuizPage> {
       );
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> responseData = jsonDecode(response.body);
+        // 명시적으로 UTF-8로 디코딩 처리
+        String responseBody = utf8.decode(response.bodyBytes);
+        Map<String, dynamic> responseData = jsonDecode(responseBody);
         print('Response Data: $responseData'); // Log the data
 
         setState(() {
@@ -116,14 +118,14 @@ class _QuizPageState extends State<QuizPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          quizList[index].question,
+                          "퀴즈 : ${quizList[index].question}",
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 8),
-                        Text(
-                          'Hint: ${quizList[index].hint}',
-                          style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                        ),
+                        // Text(
+                        //   'Hint: ${quizList[index].hint}',
+                        //   style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                        // ),
                       ],
                     ),
                   ),
@@ -180,7 +182,9 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
       );
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> responseData = jsonDecode(response.body);
+        // 명시적으로 UTF-8로 디코딩 처리
+        String responseBody = utf8.decode(response.bodyBytes);
+        Map<String, dynamic> responseData = jsonDecode(responseBody);
         print('Response Data: $responseData'); // Log the data
 
         return QuizDetail.fromJson(responseData['data']);
@@ -191,7 +195,6 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
       throw Exception('Exception occurred while fetching quiz detail: $e');
     }
   }
-
   void checkAnswer() {
     if (selectedAnswer == null) {
       setState(() {
@@ -208,7 +211,7 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
       if (distractorList.isNotEmpty) {
         final selectedDistractor = distractorList.first;
         setState(() {
-          feedbackMessage = selectedDistractor.validation ? '정답입니다!' : '틀렸습니다.';
+          feedbackMessage = selectedDistractor.validation ? '정답입니다!' : '틀렸습니다.\n다시 시도해보세요!';
         });
       } else {
         setState(() {
@@ -238,53 +241,60 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
           }
 
           final quizDetail = snapshot.data!;
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '문제 : ${quizDetail.question}',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  '힌트 : ${quizDetail.hint}',
-                  style: TextStyle(fontSize: 25, color: Colors.grey[600]),
-                ),
-                SizedBox(height: 16),
-                Text(
-                  '보기:',
-                  style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
-                ),
-                Column(
-                  children: quizDetail.distractors.map((distractor) {
-                    return RadioListTile<String>(
-                      title: Text(distractor.textzQuizDistractor),
-                      value: distractor.textzQuizDistractor,
-                      groupValue: selectedAnswer,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedAnswer = value;
-                        });
-                      },
-                    );
-                  }).toList(),
-                ),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: checkAnswer,
-                  child: Text(
-                    '제출하기',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center, // Center content horizontally
+                children: [
+                  Text(
+                    '문제 : ${quizDetail.question}',
+                    textAlign: TextAlign.center, // Center text alignment
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                ),
-                SizedBox(height: 16),
-                Text(
-                  feedbackMessage,
-                  style: TextStyle(fontSize: 30, color: Colors.black,fontWeight: FontWeight.bold),
-                ),
-              ],
+                  SizedBox(height: 8),
+                  Text(
+                    '힌트 : ${quizDetail.hint}',
+                    textAlign: TextAlign.center, // Center text alignment
+                    style: TextStyle(fontSize: 25, color: Colors.grey[600]),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    '보기',
+                    textAlign: TextAlign.center, // Center text alignment
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  ),
+                  Column(
+                    children: quizDetail.distractors.map((distractor) {
+                      return RadioListTile<String>(
+                        title: Text(distractor.textzQuizDistractor),
+                        value: distractor.textzQuizDistractor,
+                        groupValue: selectedAnswer,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedAnswer = value;
+                          });
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: checkAnswer,
+                    child: Text(
+                      '제출하기',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    feedbackMessage,
+                    textAlign: TextAlign.center, // Center text alignment
+                    style: TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
           );
         },
