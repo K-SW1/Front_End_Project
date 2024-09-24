@@ -1,6 +1,9 @@
 // import 'package:flutter/material.dart';
 // import 'package:intl/intl.dart';
 // import 'package:project/components/custom_appbar.dart';
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
+// import 'package:shared_preferences/shared_preferences.dart';
 //
 // class AddNoteScreen extends StatefulWidget {
 //   final DateTime selectedDay;
@@ -12,22 +15,104 @@
 // }
 //
 // class _AddNoteScreenState extends State<AddNoteScreen> {
+//   final _formKey2 = GlobalKey<FormState>();
 //   TextEditingController _patientController = TextEditingController();
 //   TextEditingController _noteController = TextEditingController();
-//   List<String> _notes = [];
-//   String? selectedHour;
-//   String? selectedMinute;
+//   TextEditingController _hourController = TextEditingController();
+//   TextEditingController _minuteController = TextEditingController();
+//
+//   List<String> _diaryEntries = [];
+//
+//   Future<String?> _getAccessToken() async {
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//     return prefs.getString('accessToken');
+//   }
+//
+//   Future<void> _saveDiary() async {
+//     String? accessToken = await _getAccessToken();
+//
+//     if (accessToken == null) {
+//       print("토큰이 없습니다.");
+//       return;
+//     }
+//
+//     final diary = {
+//       "name": _patientController.text,
+//       "time": "${_hourController.text}:${_minuteController.text}",
+//       "memo": _noteController.text,
+//       "date": DateFormat('yyyyMMdd').format(widget.selectedDay),
+//     };
+//
+//     try {
+//       final response = await http.post(
+//         Uri.parse("http://localhost:8080/diary/add"),
+//         headers: {
+//           "Content-type": "application/json",
+//           "accessToken": accessToken,
+//         },
+//         body: jsonEncode(diary),
+//       );
+//
+//       // 요청 성공 시 처리
+//       if (response.statusCode == 200) {
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(content: Text("성공적으로 저장되었습니다!")),
+//         );
+//         _fetchDiaryEntries();
+//       } else {
+//         print("실패: 상태 코드 ${response.statusCode}, 응답 내용: ${response.body}");
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(content: Text("저장 실패: ${response.body}")),
+//         );
+//       }
+//     } catch (error) {
+//       print("오류 발생: $error");
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text("오류가 발생했습니다: $error")),
+//       );
+//     }
+//   }
+//
+//
+//   Future<void> _fetchDiaryEntries() async {
+//     String formattedDate = DateFormat('yyyy-MM-dd').format(widget.selectedDay);
+//     String? accessToken = await _getAccessToken();
+//
+//     try {
+//       final response = await http.get(
+//         Uri.parse("http://localhost:8080/diary/by-date?date=$formattedDate"),
+//         headers: {
+//           "Content-type" : "application/json",
+//           "accessToken": "$accessToken",
+//         },
+//       );
+//
+//       if (response.statusCode == 200) {
+//         final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+//         // entries 키가 존재하고 null이 아닐 경우에만 처리
+//         List<dynamic> entries = jsonResponse['entries'] ?? []; // entries가 null이면 빈 리스트로 설정
+//
+//         setState(() {
+//           _diaryEntries = entries.map<String>((entry) => entry['memo'] as String).toList();
+//         });
+//
+//       } else {
+//         print("메모 가져오기 실패: 상태 코드 ${response.statusCode}, 응답 내용: ${response.body}");
+//       }
+//     } catch (error) {
+//       print("오류 발생: $error");
+//     }
+//   }
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _fetchDiaryEntries();
+//   }
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     Color appBarColor = Color.fromRGBO(121, 159, 161, 1.0);
-//     String formattedDate = DateFormat('yyyy-MM-dd').format(widget.selectedDay);
-//
-//     List<String> hours = List.generate(24, (index) => index.toString().padLeft(2, '0'));
-//     List<String> minutes = List.generate(60, (index) => index.toString().padLeft(2, '0'));
-//
 //     return Scaffold(
-//       backgroundColor: Color.fromRGBO(250, 250, 250, 1.0),
 //       appBar: CustomAppBar(),
 //       body: SafeArea(
 //         child: SingleChildScrollView(
@@ -35,158 +120,53 @@
 //             child: Column(
 //               children: [
 //                 SizedBox(height: 20),
-//                 Text(
-//                   "돌봄 다이어리",
-//                   textAlign: TextAlign.center,
-//                   style: TextStyle(
-//                     fontSize: 30,
-//                     fontWeight: FontWeight.bold,
-//                   ),
-//                 ),
-//                 SizedBox(height: 20),
-//                 Container(
-//                   height: 100,
-//                   color: Color.fromRGBO(230, 230, 230, 1.0),
-//                   child: Center(
-//                     child: Column(
-//                       crossAxisAlignment: CrossAxisAlignment.center,
-//                       mainAxisAlignment: MainAxisAlignment.center,
-//                       children: [
-//                         Text(
-//                           formattedDate,
-//                           style: TextStyle(
-//                               fontSize: 30, fontWeight: FontWeight.bold),
-//                         )
-//                       ],
-//                     ),
-//                   ),
-//                 ),
+//                 Text("돌봄 다이어리", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
 //                 SizedBox(height: 20),
 //                 ElevatedButton(
 //                   onPressed: () {
 //                     showDialog(
 //                       context: context,
 //                       builder: (BuildContext context) {
-//                         String? dialogSelectedHour = selectedHour;
-//                         String? dialogSelectedMinute = selectedMinute;
-//                         return StatefulBuilder(
-//                           builder: (context, setDialogState) {
-//                             return AlertDialog(
-//                               title: Text(
-//                                 '메모 추가',
-//                                 style: TextStyle(
-//                                   fontSize: 30,
-//                                   fontWeight: FontWeight.bold,
-//                                 ),
-//                               ),
-//                               content: Column(
-//                                 mainAxisSize: MainAxisSize.min,
-//                                 children: [
-//                                   TextField(
-//                                     controller: _patientController,
-//                                     decoration: InputDecoration(
-//                                         hintText: "환자명을 입력하세요"
-//                                     ),
-//                                   ),
-//                                   SizedBox(height: 20,),
-//                                   Row(
-//                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                                     children: [
-//                                       DropdownButton<String>(
-//                                         hint: Text("시간 (HH)"),
-//                                         value: dialogSelectedHour,
-//                                         onChanged: (String? newValue) {
-//                                           setDialogState(() {
-//                                             dialogSelectedHour = newValue!;
-//                                           });
-//                                         },
-//                                         items: hours.map<DropdownMenuItem<String>>((String value) {
-//                                           return DropdownMenuItem<String>(
-//                                             value: value,
-//                                             child: Text(value),
-//                                           );
-//                                         }).toList(),
-//                                       ),
-//                                       DropdownButton<String>(
-//                                         hint: Text("분 (MM)"),
-//                                         value: dialogSelectedMinute,
-//                                         onChanged: (String? newValue) {
-//                                           setDialogState(() {
-//                                             dialogSelectedMinute = newValue!;
-//                                           });
-//                                         },
-//                                         items: minutes.map<DropdownMenuItem<String>>((String value) {
-//                                           return DropdownMenuItem<String>(
-//                                             value: value,
-//                                             child: Text(value),
-//                                           );
-//                                         }).toList(),
-//                                       ),
-//                                     ],
-//                                   ),
-//                                   TextField(
-//                                     controller: _noteController,
-//                                     decoration: InputDecoration(
-//                                       hintText: "메모 내용을 입력하세요",
-//                                     ),
-//                                   ),
-//                                 ],
-//                               ),
-//                               actions: [
-//                                 TextButton(
-//                                   onPressed: () {
-//                                     Navigator.of(context).pop(); // 다이얼로그 닫기
-//                                   },
-//                                   child: Text(
-//                                     '취소',
-//                                     style: TextStyle(
-//                                       fontWeight: FontWeight.bold,
-//                                       fontSize: 15,
-//                                     ),
-//                                   ),
-//                                 ),
-//                                 TextButton(
-//                                   onPressed: () {
-//                                     String memoText = _noteController.text;
-//                                     String patientName = _patientController.text;
-//
-//                                     if (memoText.isNotEmpty && dialogSelectedHour != null && dialogSelectedMinute != null && patientName.isNotEmpty) {
-//                                       setState(() {
-//                                         _notes.add('환자명 : $patientName\n내   용 : $memoText\n시   간 : $dialogSelectedHour:$dialogSelectedMinute');
-//                                         _noteController.clear();
-//                                         _patientController.clear();
-//                                         selectedHour = null;
-//                                         selectedMinute = null;
-//                                       });
-//                                       Navigator.of(context).pop(); // 다이얼로그 닫기
-//                                     }
-//                                   },
-//                                   child: Text(
-//                                     '저장',
-//                                     style: TextStyle(
-//                                       fontWeight: FontWeight.bold,
-//                                       fontSize: 15,
-//                                     ),
-//                                   ),
-//                                 ),
-//                               ],
-//                             );
-//                           },
+//                         return AlertDialog(
+//                           title: Text('메모 추가', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+//                           content: Column(
+//                             mainAxisSize: MainAxisSize.min,
+//                             children: [
+//                               TextField(controller: _patientController, decoration: InputDecoration(hintText: "환자명을 입력하세요")),
+//                               SizedBox(height: 20),
+//                               TextField(controller: _hourController, decoration: InputDecoration(hintText: "시간을 입력하세요 (HH)"), keyboardType: TextInputType.number),
+//                               SizedBox(height: 20),
+//                               TextField(controller: _minuteController, decoration: InputDecoration(hintText: "분을 입력하세요 (MM)"), keyboardType: TextInputType.number),
+//                               SizedBox(height: 20),
+//                               TextField(controller: _noteController, decoration: InputDecoration(hintText: "메모 내용을 입력하세요")),
+//                             ],
+//                           ),
+//                           actions: [
+//                             TextButton(
+//                               onPressed: () => Navigator.of(context).pop(),
+//                               child: Text('취소', style: TextStyle(fontSize: 15)),
+//                             ),
+//                             TextButton(
+//                               onPressed: () {
+//                                 if (_patientController.text.isNotEmpty && _hourController.text.isNotEmpty && _minuteController.text.isNotEmpty && _noteController.text.isNotEmpty) {
+//                                   _saveDiary();
+//                                   Navigator.of(context).pop();
+//                                 } else {
+//                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("모든 필드를 입력하세요!")));
+//                                 }
+//                               },
+//                               child: Text('저장', style: TextStyle(fontSize: 15)),
+//                             ),
+//                           ],
 //                         );
 //                       },
 //                     );
 //                   },
-//                   child: Text(
-//                     "메모 추가",
-//                     style: TextStyle(
-//                       fontWeight: FontWeight.bold,
-//                       fontSize: 20,
-//                     ),
-//                   ),
+//                   child: Text("메모 추가", style: TextStyle(fontSize: 20)),
 //                   style: ElevatedButton.styleFrom(
-//                     primary: Color.fromRGBO(121, 159, 161, 1.0), // 배경 색상
-//                     onPrimary: Colors.black, // 글자 색상
-//                     fixedSize: Size(280, 70), // 버튼 크기
+//                     primary: Color.fromRGBO(121, 159, 161, 1.0),
+//                     onPrimary: Colors.black,
+//                     fixedSize: Size(280, 70),
 //                   ),
 //                 ),
 //                 SizedBox(height: 40),
@@ -194,24 +174,14 @@
 //                   alignment: Alignment.centerLeft,
 //                   child: Padding(
 //                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-//                     child: Text(
-//                       "등록된 메모",
-//                       style: TextStyle(
-//                           fontSize: 30, fontWeight: FontWeight.bold),
-//                     ),
+//                     child: Text("등록된 메모", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
 //                   ),
 //                 ),
-//                 ListView.builder(
-//                   shrinkWrap: true,
-//                   itemCount: _notes.length,
-//                   itemBuilder: (context, index) {
-//                     return ListTile(
-//                       title: Text(
-//                         _notes[index],
-//                         style: TextStyle(fontSize: 20),
-//                       ),
-//                     );
-//                   },
+//                 Padding(
+//                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+//                   child: Column(
+//                     children: _diaryEntries.map((entry) => Text(entry, style: TextStyle(fontSize: 20))).toList(),
+//                   ),
 //                 ),
 //               ],
 //             ),
@@ -221,8 +191,13 @@
 //     );
 //   }
 // }
-//
 
+
+/**
+ *
+ * // 등록된 메모 가져오기부터 수정하면 댐
+
+ */
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project/components/custom_appbar.dart';
@@ -240,19 +215,20 @@ class AddNoteScreen extends StatefulWidget {
 }
 
 class _AddNoteScreenState extends State<AddNoteScreen> {
-  final _formKey2 = GlobalKey<FormState>();
   TextEditingController _patientController = TextEditingController();
   TextEditingController _noteController = TextEditingController();
   TextEditingController _hourController = TextEditingController();
   TextEditingController _minuteController = TextEditingController();
 
-  List<String> _diaryEntries = [];
+  List<Map<String, dynamic>> _diaryEntries = []; // 메모 데이터를 담는 리스트
 
+  // SharedPreferences에서 accessToken 가져오기
   Future<String?> _getAccessToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('accessToken');
   }
 
+  // 서버로 메모 저장 요청 보내기
   Future<void> _saveDiary() async {
     String? accessToken = await _getAccessToken();
 
@@ -265,7 +241,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
       "name": _patientController.text,
       "time": "${_hourController.text}:${_minuteController.text}",
       "memo": _noteController.text,
-      "date": DateFormat('yyyyMMdd').format(widget.selectedDay),
+      "date": DateFormat('yyyyMMdd').format(widget.selectedDay), // yyyyMMdd 형식으로 날짜 변환
     };
 
     try {
@@ -278,12 +254,11 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         body: jsonEncode(diary),
       );
 
-      // 요청 성공 시 처리
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("성공적으로 저장되었습니다!")),
         );
-        _fetchDiaryEntries();
+        _fetchDiaryEntries(); // 메모를 저장한 후 다시 목록을 업데이트
       } else {
         print("실패: 상태 코드 ${response.statusCode}, 응답 내용: ${response.body}");
         ScaffoldMessenger.of(context).showSnackBar(
@@ -297,39 +272,48 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
       );
     }
   }
-  //
-  // Future<void> _fetchDiaryEntries() async {
-  //   String formattedDate = DateFormat('yyyy-MM-dd').format(widget.selectedDay);
-  //   String? accessToken = await _getAccessToken();
-  //
-  //   try {
-  //     final response = await http.get(
-  //       Uri.parse("http://localhost:8080/diary/by-date?date=$formattedDate"),
-  //       headers: {
-  //         "accessToken": "$accessToken",
-  //       },
-  //     );
-  //
-  //     if (response.statusCode == 200) {
-  //       final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-  //       List<dynamic> entries = jsonResponse['entries'];
-  //
-  //       setState(() {
-  //         _diaryEntries = entries.map<String>((entry) => entry['memo'] as String).toList();
-  //       });
-  //     } else {
-  //       print("메모 가져오기 실패: 상태 코드 ${response.statusCode}, 응답 내용: ${response.body}");
-  //     }
-  //   } catch (error) {
-  //     print("오류 발생: $error");
-  //   }
-  // }
-  //
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _fetchDiaryEntries();
-  // }
+
+  // 서버에서 해당 날짜의 메모 목록을 가져오기
+  Future<void> _fetchDiaryEntries() async {
+    String formattedDate = DateFormat('yyyy-MM-dd').format(widget.selectedDay); // 서버에서 요구하는 날짜 형식
+    String? accessToken = await _getAccessToken();
+
+    try {
+      final response = await http.get(
+        Uri.parse("http://localhost:8080/diary/by-date?date=$formattedDate"),
+        headers: {
+          "Content-type": "application/json",
+          "accessToken": "$accessToken",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(utf8.decode(response.bodyBytes)); // UTF-8로 디코딩
+        print("서버 응답: $jsonResponse"); // 서버로부터 받은 데이터 출력
+
+        List<dynamic> entries = jsonResponse['data'] ?? []; // 'entries' 대신 'data'에서 가져옴
+
+        setState(() {
+          _diaryEntries = entries.map<Map<String, dynamic>>((entry) => {
+            'name': entry['name'],
+            'time': entry['time'],
+            'memo': entry['memo'],
+            'date': entry['date'],
+          }).toList(); // 각 항목을 Map 형식으로 변환하여 저장
+        });
+      } else {
+        print("메모 가져오기 실패: 상태 코드 ${response.statusCode}, 응답 내용: ${response.body}");
+      }
+    } catch (error) {
+      print("오류 발생: $error");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchDiaryEntries(); // 화면이 열릴 때 해당 날짜의 메모를 불러옴
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -345,6 +329,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
+                    // 메모 추가를 위한 다이얼로그를 띄움
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -364,16 +349,16 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                           ),
                           actions: [
                             TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
+                              onPressed: () => Navigator.of(context).pop(), // 취소 버튼
                               child: Text('취소', style: TextStyle(fontSize: 15)),
                             ),
                             TextButton(
                               onPressed: () {
                                 if (_patientController.text.isNotEmpty && _hourController.text.isNotEmpty && _minuteController.text.isNotEmpty && _noteController.text.isNotEmpty) {
-                                  _saveDiary();
-                                  Navigator.of(context).pop();
+                                  _saveDiary(); // 메모 저장 요청
+                                  Navigator.of(context).pop(); // 다이얼로그 닫기
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("모든 필드를 입력하세요!")));
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("모든 필드를 입력하세요!"))); // 필드가 비어 있을 때 경고 메시지
                                 }
                               },
                               child: Text('저장', style: TextStyle(fontSize: 15)),
@@ -398,10 +383,19 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                     child: Text("등록된 메모", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
                   ),
                 ),
+                // 등록된 메모 목록을 출력
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
-                    children: _diaryEntries.map((entry) => Text(entry, style: TextStyle(fontSize: 20))).toList(),
+                    children: _diaryEntries.isNotEmpty
+                        ? _diaryEntries.map((entry) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Text(
+                        "환자 이름: ${entry['name']}\n시간: ${entry['time']}\n메모: ${entry['memo']}\n날짜: ${entry['date']}",
+                        style: TextStyle(fontSize: 25),
+                      ),
+                    )).toList()
+                        : [Text("등록된 메모가 없습니다.", style: TextStyle(fontSize: 20))],
                   ),
                 ),
               ],
