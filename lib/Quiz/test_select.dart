@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project/Quiz/all_test.dart';
-import 'package:project/Quiz/test_quiz.dart';
+import 'package:project/Quiz/test_Quizlist.dart';
+
 import 'package:project/components/custom_appbar.dart';
 import 'package:project/components/custom_banner.dart';
 import 'package:project/components/custom_bottomNavigation.dart';
-
 
 class Alltest extends StatelessWidget {
   @override
@@ -22,7 +22,7 @@ class Alltest extends StatelessWidget {
             Divider(thickness: 3, color: Colors.black),
             InkWell(
               onTap: () {
-                Get.to(() => Allquiz());
+                Get.to(() => Allquiz1());
               },
               child: Container(
                 width: 400,
@@ -32,13 +32,13 @@ class Alltest extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(
-                      Icons.list_alt_rounded,
+                      Icons.quiz,
                       size: 45,
                       color: Colors.black,
                     ),
                     SizedBox(width: 20),
                     Text(
-                      "전체 문제 풀기",
+                      "이미지 문제 풀기",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 40,
@@ -62,13 +62,13 @@ class Alltest extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(
-                      Icons.quiz,
+                      Icons.list_alt_rounded,
                       size: 45,
                       color: Colors.black,
                     ),
                     SizedBox(width: 20),
                     Text(
-                      "단일 문제 풀기",
+                      "문자 문제 풀기",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 40,
