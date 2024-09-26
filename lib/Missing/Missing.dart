@@ -108,30 +108,10 @@ class MissingPersonsScreen extends StatelessWidget {
                           SizedBox(height: 8),
                           persons[index].img.isNotEmpty
                               ? Image.network(persons[index].img)
-                              : SizedBox.shrink(),
+                              : Text('사진이 존재하지 않음', style: TextStyle(fontSize: 16, color: Colors.red)),
                         ],
                       ),
                     ),
-                    // child: Column(
-                    //   crossAxisAlignment: CrossAxisAlignment.start,
-                    //   children: [
-                    //     Text('이름: ${persons[index].name}',
-                    //         style: TextStyle(
-                    //             fontSize: 25, fontWeight: FontWeight.bold)),
-                    //     SizedBox(height: 8),
-                    //     Text('나이: ${persons[index].age}', style: TextStyle(fontSize: 16)),
-                    //     SizedBox(height: 8),
-                    //     Text('실종날짜: ${persons[index].date}', style: TextStyle(fontSize: 16)),
-                    //     SizedBox(height: 8),
-                    //     Text('지역: ${persons[index].area}', style: TextStyle(fontSize: 16)),
-                    //     SizedBox(height: 8),
-                    //     Text('성별: ${persons[index].gender}', style: TextStyle(fontSize: 16)),
-                    //     SizedBox(height: 8),
-                    //     persons[index].img.isNotEmpty
-                    //         ? Image.network(persons[index].img)
-                    //         : SizedBox.shrink(),
-                    //   ],
-                    // ),
                   ),
                 );
               },
