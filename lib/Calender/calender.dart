@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:project/Calender/addNote.dart';
 import 'package:project/components/custom_appbar.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -9,6 +10,7 @@ class CalenderApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       home: CalenderScreen(),
     );
   }
@@ -70,11 +72,10 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               _selectedDay = selectedDay;
               _focusedDay = focusedDay; // update `_focusedDay` here as well
             });
+
             // 새로운 메모 추가 화면으로 이동
-            final newNote = await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AddNoteScreen(selectedDay: selectedDay),
-              ),
+            final newNote = await Get.to(
+                    ()=> AddNoteScreen(selectedDay: selectedDay)
             );
 
             if (newNote != null) {
