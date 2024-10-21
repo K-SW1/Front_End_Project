@@ -24,6 +24,7 @@ dependencies:
   flutter_secure_storage:
   image_picker: ^1.0.8
   shared_preferences:
+  permission_handler:
 
 dev_dependencies:
   flutter_test:
