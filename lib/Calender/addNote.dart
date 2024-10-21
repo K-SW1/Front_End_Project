@@ -1,8 +1,3 @@
-/**
- *
- * // 등록된 메모 가져오기부터 수정하면 댐
-
- */
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project/components/custom_appbar.dart';
@@ -22,8 +17,8 @@ class AddNoteScreen extends StatefulWidget {
 class _AddNoteScreenState extends State<AddNoteScreen> {
   TextEditingController _patientController = TextEditingController();
   TextEditingController _noteController = TextEditingController();
-  TextEditingController _hourController = TextEditingController();
-  TextEditingController _minuteController = TextEditingController();
+  int? _selectedHour;
+  int? _selectedMinute;
 
   List<Map<String, dynamic>> _diaryEntries = []; // 메모 데이터를 담는 리스트
 
@@ -42,9 +37,16 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
       return;
     }
 
+    if (_selectedHour == null || _selectedMinute == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("시간을 선택해주세요!")),
+      );
+      return;
+    }
+
     final diary = {
       "name": _patientController.text,
-      "time": "${_hourController.text}:${_minuteController.text}",
+      "time": "${_selectedHour!}:${_selectedMinute!}",
       "memo": _noteController.text,
       "date": DateFormat('yyyyMMdd').format(widget.selectedDay), // yyyyMMdd 형식으로 날짜 변환
     };
@@ -120,6 +122,68 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     _fetchDiaryEntries(); // 화면이 열릴 때 해당 날짜의 메모를 불러옴
   }
 
+  // 시간 선택 드롭다운
+// 시간 선택 드롭다운
+// 시간 선택 드롭다운
+  Widget _buildHourDropdown() {
+    return Container(
+      width: 120, // 드롭다운의 너비 설정
+      height: 50, // 드롭다운의 높이 설정
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: DropdownButton<int>(
+        isExpanded: true,
+        value: _selectedHour, // 선택된 값을 표시
+        hint: Text('시'),
+        items: List.generate(24, (index) => index).map((int value) {
+          return DropdownMenuItem (
+            value: value,
+            child: Text(value.toString()),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            _selectedHour = value!;
+            // print("선택된 시: $_selectedHour"); // 디버깅용 출력
+          });
+        },
+      ),
+    );
+  }
+
+// 분 선택 드롭다운
+  Widget _buildMinuteDropdown() {
+    return Container(
+      width: 120, // 드롭다운의 너비 설정
+      height: 50, // 드롭다운의 높이 설정
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: DropdownButton<int>(
+        isExpanded: true,
+        value: _selectedMinute, // 선택된 값을 표시
+        hint: Text('분'),
+        items: List.generate(60, (index) => index).map((int value) {
+          return DropdownMenuItem (
+            value: value,
+            child: Text(value.toString()),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            _selectedMinute = value!;
+            // print("선택된 분: $_selectedMinute"); // 디버깅용 출력
+          });
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,6 +196,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                 SizedBox(height: 20),
                 Text("돌봄 다이어리", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
                 SizedBox(height: 20),
+
                 ElevatedButton(
                   onPressed: () {
                     // 메모 추가를 위한 다이얼로그를 띄움
@@ -145,9 +210,14 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                             children: [
                               TextField(controller: _patientController, decoration: InputDecoration(hintText: "환자명을 입력하세요")),
                               SizedBox(height: 20),
-                              TextField(controller: _hourController, decoration: InputDecoration(hintText: "시간을 입력하세요 (HH)"), keyboardType: TextInputType.number),
-                              SizedBox(height: 20),
-                              TextField(controller: _minuteController, decoration: InputDecoration(hintText: "분을 입력하세요 (MM)"), keyboardType: TextInputType.number),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  _buildHourDropdown(), // 시 선택 드롭다운
+                                  SizedBox(width: 10), // 시와 분 사이 간격 설정
+                                  _buildMinuteDropdown(), // 분 선택 드롭다운
+                                ],
+                              ),
                               SizedBox(height: 20),
                               TextField(controller: _noteController, decoration: InputDecoration(hintText: "메모 내용을 입력하세요")),
                             ],
@@ -159,7 +229,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                             ),
                             TextButton(
                               onPressed: () {
-                                if (_patientController.text.isNotEmpty && _hourController.text.isNotEmpty && _minuteController.text.isNotEmpty && _noteController.text.isNotEmpty) {
+                                if (_patientController.text.isNotEmpty && _selectedHour != null && _selectedMinute != null && _noteController.text.isNotEmpty) {
                                   _saveDiary(); // 메모 저장 요청
                                   Navigator.of(context).pop(); // 다이얼로그 닫기
                                 } else {
