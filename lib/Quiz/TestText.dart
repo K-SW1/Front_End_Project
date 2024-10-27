@@ -122,10 +122,10 @@ class _QuizPageState extends State<Allquiz> {
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 8),
-                        // Text(
-                        //   'Hint: ${quizList[index].hint}',
-                        //   style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                        // ),
+                        Text(
+                          'Hint: ${quizList[index].hint}',
+                          style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                        ),
                       ],
                     ),
                   ),
@@ -325,8 +325,8 @@ class QuizDetail {
 }
 
 class Distractor {
-  final String textzQuizDistractor;
-  final bool validation;
+  late final String textzQuizDistractor;
+  late final bool validation;
 
   Distractor({required this.textzQuizDistractor, required this.validation});
 
