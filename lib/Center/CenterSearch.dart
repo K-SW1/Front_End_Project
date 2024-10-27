@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project/aasd/teste.dart';
 import 'package:project/components/custom_appbar.dart';
 import 'package:project/components/custom_textquiz_form.dart';
-
-void main() => runApp(CenterSearch());
+//
+// void main() => runApp(CenterSearch());
 
 class CenterSearch extends StatelessWidget {
 
