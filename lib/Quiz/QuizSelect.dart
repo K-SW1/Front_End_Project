@@ -3,7 +3,7 @@
 // import 'package:project/Main/Second.dart';
 // import 'package:project/Quiz/Quiz.dart';
 // import 'package:project/Quiz/QuizRegister.dart';
-// import 'package:project/aasd/test_quiz.dart';
+// import 'package:project/aasd/test_Quizlist.dart';
 // import 'package:project/components/custom_appbar.dart';
 // import 'package:project/components/custom_banner.dart';
 // import 'package:project/components/custom_bottomNavigation.dart';
@@ -101,13 +101,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project/Quiz/QuizRegister.dart';
-import 'package:project/Quiz/all_test.dart';
-import 'package:project/Quiz/test_quiz.dart';
+import 'package:project/Quiz/TestText.dart';
+import 'package:project/Quiz/test_Quizlist.dart';
 import 'package:project/Quiz/test_select.dart';
 import 'package:project/components/custom_appbar.dart';
 import 'package:project/components/custom_banner.dart';
 import 'package:project/components/custom_bottomNavigation.dart';
-import 'package:project/Quiz/Quiz.dart';
 
 import '../aasd/Qu.dart'; // QuizListScreen을 사용하기 위해 추가
 
