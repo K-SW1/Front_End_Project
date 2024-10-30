@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_naver_map: ^1.1.2
+  http_parser:
+  io:
   geocoding: ^2.0.4
   cupertino_icons: ^1.0.2
   get:
@@ -25,6 +27,7 @@ dependencies:
   image_picker: ^1.0.8
   shared_preferences:
   permission_handler:
+
 
 dev_dependencies:
   flutter_test:
