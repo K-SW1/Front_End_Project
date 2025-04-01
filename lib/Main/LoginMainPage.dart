@@ -25,7 +25,7 @@ class LoginPage extends StatelessWidget {
 
             InkWell(
               onTap: () {
-                Get.off(() => Login());
+                Get.off(() => LoginScreen());
               },
               child: Container(
                 margin: EdgeInsets.only(bottom: 70),
